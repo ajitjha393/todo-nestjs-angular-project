@@ -1,0 +1,14 @@
+{
+  "name": "shared-types",
+  "version": "1.0.0",
+  "main": "dist/interfaces.js",
+  "types": "dist/interfaces.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepack": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  }
+}
