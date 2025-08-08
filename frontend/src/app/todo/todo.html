@@ -1,9 +1,18 @@
 ﻿<div class="todo-container">
   <h2>My Todos</h2>
   
+    <!-- Add this error div right after the header -->
+  @if (errorMessage) {
+    <div class="error-message">
+      ⚠️ {{ errorMessage }}
+      <button (click)="errorMessage = ''" class="close-btn">×</button>
+    </div>
+  }
+
+
   <div class="add-todo">
-    <input [(ngModel)]="newTodo.title" placeholder="Title" required>
-    <input [(ngModel)]="newTodo.description" placeholder="Description">
+    <input [(ngModel)]="newTodo.title" (input)="clearError()" placeholder="Title" required>
+    <input [(ngModel)]="newTodo.description" (input)="clearError()" placeholder="Description">
     <button (click)="addTodo()" [disabled]="!newTodo.title.trim()">Add</button>
   </div>
   

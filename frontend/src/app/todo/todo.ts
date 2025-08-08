@@ -15,6 +15,7 @@ export class TodoComponent implements OnInit {
   todos: Todo[] = [];
   newTodo: CreateTodoDto = { title: '', description: '' };
   isLoading = true;
+  errorMessage: any;
 
   constructor(private todoService: TodoService) {}
 
@@ -35,18 +36,27 @@ export class TodoComponent implements OnInit {
       }
     });
   }
+// Clear error when user starts typing
+  clearError() {
+    this.errorMessage = '';
+  }
+  
 
   addTodo(): void {
-    if (!this.newTodo.title.trim()) return;
-    
-    this.todoService.createTodo(this.newTodo).subscribe({
-      next: () => {
-        this.loadTodos();
-        this.newTodo = { title: '', description: '' };
-      },
-      error: (err) => console.error('Failed to create todo', err)
-    });
-  }
+  if (!this.newTodo.title.trim()) return;
+  this.errorMessage = ''; // Clear previous errors
+
+  this.todoService.createTodo(this.newTodo).subscribe({
+    next: () => {
+      this.loadTodos();
+      this.newTodo = { title: '', description: '' };
+    },
+    error: (err) => {
+      this.errorMessage = err; // Display this in template
+      console.error('Creation failed:', err);
+    }
+  });
+}
 
   toggleComplete(todo: Todo): void {
     const update: UpdateTodoDto = { completed: !todo.completed };

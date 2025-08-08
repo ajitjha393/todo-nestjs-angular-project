@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@nestjs/common';
+﻿import { ConflictException, Injectable } from '@nestjs/common';
 import { Todo, CreateTodoDto, UpdateTodoDto } from 'shared-types';
 
 @Injectable()
@@ -18,6 +18,16 @@ export class TodoService {
   }
 
   create(createTodoDto: CreateTodoDto): Todo {
+
+     // Duplicate check
+    const exists = this.todos.some(todo => 
+      todo.title.toLowerCase() === createTodoDto.title.toLowerCase()
+    );
+    
+    if (exists) {
+      throw new ConflictException('Todo with this title already exists');
+    }
+    
     const newTodo: Todo = {
       id: this.nextId++,
       completed: false,
